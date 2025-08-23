@@ -6,14 +6,14 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { ibAPI } from '../services/api';
-import type { IBRequest, IBFormData } from '../types/index';
+import type { IBRequest as IBRequestType, IBFormData } from '../types/index';
 
 /**
  * IB Request page component
  * Handles Introducing Broker applications
  */
 const IBRequest: React.FC = () => {
-  const [requests, setRequests] = useState<IBRequest[]>([]);
+  const [requests, setRequests] = useState<IBRequestType[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 

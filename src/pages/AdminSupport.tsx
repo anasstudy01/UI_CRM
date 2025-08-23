@@ -171,7 +171,8 @@ const AdminSupport: React.FC = () => {
     return user ? `${user.firstName} ${user.lastName}` : 'Unknown User';
   };
 
-  const getDepartmentName = (departmentId: string) => {
+  const getDepartmentName = (departmentId?: string) => {
+    if (!departmentId) return 'No Department';
     const department = departments.find(d => d.id === departmentId);
     return department ? department.name : 'Unknown Department';
   };

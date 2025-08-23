@@ -9,7 +9,7 @@ import TradingAccountCreation from '../pages/TradingAccountCreation';
 import KYCVerification from '../pages/KYCVerification';
 import Deposits from '../pages/Deposits';
 import InternalTransfer from '../pages/InternalTransfer';
-import  IBRequest from '../pages/IBRequest';
+import IBRequestPage from '../pages/IBRequest';
 import TwoFactorAuth from '../pages/TwoFactorAuth';
 import MyAccounts from '../pages/MyAccount';
 import ManageAccounts from '../pages/ManageAccounts';
@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'ib-request',
-            element: <IBRequest />,
+            element: <IBRequestPage />,
           },
           {
             path: '2fa',

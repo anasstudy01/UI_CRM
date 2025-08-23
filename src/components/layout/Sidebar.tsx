@@ -9,7 +9,6 @@ import {
   ArrowRightLeft,
   Users,
   Shield,
-  Settings,
   LogOut,
   ChevronDown,
   ChevronRight,
@@ -63,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
     { name: "IB Request", href: "/dashboard/ib-request", icon: Users },
     { name: "2FA Settings", href: "/dashboard/2fa", icon: Shield },
     { name: "Support", href: "/dashboard/support", icon: MessageCircle },
-    { name: "Profile", href: "/dashboard/profile", icon: User },
+    // { name: "Profile", href: "/dashboard/profile", icon: User },
   ];
 
   const toggleSubmenu = (menuName: string) => {
@@ -195,13 +194,29 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
           <li className="mt-auto">
             <ul role="list" className="-mx-2 space-y-1">
               <li>
-                <a
-                  href="#"
-                  className="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700 hover:text-green-700 hover:bg-green-50"
+                <NavLink
+                  to="/dashboard/profile"
+                  className={({ isActive }) =>
+                    `group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-700"
+                        : "text-gray-700 hover:text-green-700 hover:bg-green-50"
+                    }`
+                  }
                 >
-                  <Settings className="h-5 w-5 shrink-0 text-gray-400 group-hover:text-green-700" />
-                  Settings
-                </a>
+                  {({ isActive }) => (
+                    <>
+                      <User
+                        className={`h-5 w-5 shrink-0 ${
+                          isActive
+                            ? "text-green-700"
+                            : "text-gray-400 group-hover:text-green-700"
+                        }`}
+                      />
+                      Profile
+                    </>
+                  )}
+                </NavLink>
               </li>
               <li>
                 <button
