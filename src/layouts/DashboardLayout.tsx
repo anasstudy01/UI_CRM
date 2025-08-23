@@ -21,13 +21,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, onLogout })
     const path = location.pathname;
     const titleMap: Record<string, string> = {
       '/dashboard': 'Dashboard',
-      '/live-accounts': 'Live Accounts',
-      '/trading-account': 'Trading Account Creation',
-      '/kyc': 'KYC Verification',
-      '/deposits': 'Deposits',
-      '/internal-transfer': 'Internal Transfer',
-      '/ib-request': 'IB Request',
-      '/2fa': 'Two Factor Authentication',
+      '/dashboard/live-accounts': 'Live Accounts',
+      '/dashboard/trading-account': 'Trading Account Creation',
+      '/dashboard/kyc': 'KYC Verification',
+      '/dashboard/deposits': 'Deposits',
+      '/dashboard/internal-transfer': 'Internal Transfer',
+      '/dashboard/ib-request': 'IB Request',
+      '/dashboard/2fa': 'Two Factor Authentication',
+      '/dashboard/support': 'Support',
+      '/dashboard/profile': 'Profile Settings',
     };
     return titleMap[path] || 'Dashboard';
   };

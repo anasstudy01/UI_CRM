@@ -14,6 +14,7 @@ import {
   ChevronDown,
   ChevronRight,
   MessageCircle,
+  User,
   // Plus,
   Settings as ManageIcon,
 } from "lucide-react";
@@ -62,6 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
     { name: "IB Request", href: "/dashboard/ib-request", icon: Users },
     { name: "2FA Settings", href: "/dashboard/2fa", icon: Shield },
     { name: "Support", href: "/dashboard/support", icon: MessageCircle },
+    { name: "Profile", href: "/dashboard/profile", icon: User },
   ];
 
   const toggleSubmenu = (menuName: string) => {

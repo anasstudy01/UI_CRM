@@ -9,13 +9,14 @@ import TradingAccountCreation from '../pages/TradingAccountCreation';
 import KYCVerification from '../pages/KYCVerification';
 import Deposits from '../pages/Deposits';
 import InternalTransfer from '../pages/InternalTransfer';
-import IBRequest from '../pages/IBRequest';
+import  IBRequest from '../pages/IBRequest';
 import TwoFactorAuth from '../pages/TwoFactorAuth';
 import MyAccounts from '../pages/MyAccount';
 import ManageAccounts from '../pages/ManageAccounts';
 import Support from '../pages/Support';
 import CreateTicket from '../pages/CreateTicket';
 import AdminSupport from '../pages/AdminSupport';
+import Profile from '../pages/Profile';
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
           {
             path: 'support/create-ticket',
             element: <CreateTicket />,
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
           },
         ],
       },

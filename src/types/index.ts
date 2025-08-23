@@ -295,3 +295,20 @@ export interface DashboardLayoutProps {
   children: ReactNode;
   onLogout: () => void;
 }
+
+// Profile types
+export interface ProfileFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  address: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+
+export interface ProfilePictureData {
+  profilePicture: File | null;
+}

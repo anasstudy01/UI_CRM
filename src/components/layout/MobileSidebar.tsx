@@ -14,6 +14,8 @@ import {
   ChevronDown,
   ChevronRight,
   Plus,
+  User,
+  MessageCircle,
   Settings as ManageIcon
 } from 'lucide-react';
 
@@ -33,16 +35,18 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ isOpen, onClose, onLogout
       name: 'Accounts',
       icon: TrendingUp,
       submenu: [
-        { name: 'Create Account', href: '/trading-account', icon: Plus },
-        { name: 'Manage Account', href: '/manage-account', icon: ManageIcon },
-        { name: 'Live Accounts', href: '/live-accounts', icon: TrendingUp },
+        { name: 'Create Account', href: '/dashboard/trading-account', icon: Plus },
+        { name: 'Manage Account', href: '/dashboard/manage-accounts', icon: ManageIcon },
+        { name: 'Live Accounts', href: '/dashboard/live-accounts', icon: TrendingUp },
       ]
     },
-    { name: 'KYC Verification', href: '/kyc', icon: FileText },
-    { name: 'Deposits', href: '/deposits', icon: CreditCard },
-    { name: 'Internal Transfer', href: '/internal-transfer', icon: ArrowRightLeft },
-    { name: 'IB Request', href: '/ib-request', icon: Users },
-    { name: '2FA Settings', href: '/2fa', icon: Shield },
+    { name: 'KYC Verification', href: '/dashboard/kyc', icon: FileText },
+    { name: 'Deposits', href: '/dashboard/deposits', icon: CreditCard },
+    { name: 'Internal Transfer', href: '/dashboard/internal-transfer', icon: ArrowRightLeft },
+    { name: 'IB Request', href: '/dashboard/ib-request', icon: Users },
+    { name: '2FA Settings', href: '/dashboard/2fa', icon: Shield },
+    { name: 'Support', href: '/dashboard/support', icon: MessageCircle },
+    { name: 'Profile', href: '/dashboard/profile', icon: User },
   ];
 
   const toggleSubmenu = (menuName: string) => {

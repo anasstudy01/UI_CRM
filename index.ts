@@ -150,7 +150,7 @@ export { default as ManageAccount } from './src/pages/MyAccount';
 export { default as KYCVerification } from './src/pages/KYCVerification';
 export { default as Deposits } from './src/pages/Deposits';
 export { default as InternalTransfer } from './src/pages/InternalTransfer';
-export type { default as IBRequestPage } from './src/pages/IBRequest';
+export { default as IBRequestPage } from './src/pages/IBRequest';
 export { default as TwoFactorAuth } from './src/pages/TwoFactorAuth';
 
 // =============================================================================
