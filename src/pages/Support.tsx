@@ -3,23 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { MessageCircle, Send, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import type {Message,Department,ChatTicket} from '../types/index'
+import type {Message,ChatTicket} from '../types/index'
 
 
 const Support: React.FC = () => {
   const navigate = useNavigate();
-  const [departments, setDepartments] = useState<Department[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [tickets, setTickets] = useState<ChatTicket[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState<string>('');
   const [selectedTicket, setSelectedTicket] = useState<string>('');
   const [newMessage, setNewMessage] = useState('');
-
-  
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchDepartments();
     fetchTickets();
   }, []);
 
@@ -35,16 +30,6 @@ const Support: React.FC = () => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const fetchDepartments = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/supportDepartments');
-      const data = await response.json();
-      setDepartments(data);
-    } catch (error) {
-      console.error('Error fetching departments:', error);
-    }
   };
 
   const fetchTickets = async () => {
@@ -67,8 +52,6 @@ const Support: React.FC = () => {
     }
   };
 
-  
-
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedTicket) return;
 
@@ -76,7 +59,6 @@ const Support: React.FC = () => {
       id: Date.now().toString(),
       ticketId: selectedTicket,
       userId: '1',
-      departmentId: selectedDepartment,
       sender: 'user',
       message: newMessage,
       timestamp: new Date().toISOString(),
@@ -127,7 +109,6 @@ const Support: React.FC = () => {
     }
   };
 
-  const selectedDept = departments.find(dept => dept.id === selectedDepartment);
   const selectedTicketData = tickets.find(ticket => ticket.id === selectedTicket);
 
   return (
@@ -147,39 +128,8 @@ const Support: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Departments & Tickets */}
+        {/* Tickets Only */}
         <div className="lg:col-span-1 space-y-4">
-          {/* Departments */}
-          <Card className="p-4">
-            <h3 className="font-semibold text-gray-900 mb-3">Departments</h3>
-            <div className="space-y-2">
-              {departments.map((dept) => (
-                <button
-                  key={dept.id}
-                  onClick={() => setSelectedDepartment(dept.id)}
-                  className={`w-full text-left p-3 rounded-lg border transition-colors ${
-                    selectedDepartment === dept.id
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-medium text-sm">{dept.name}</span>
-                    <span className={`w-2 h-2 rounded-full ${
-                      dept.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                    }`} />
-                  </div>
-                  <p className="text-xs text-gray-600 mb-1">{dept.description}</p>
-                  <p className="text-xs text-gray-500">
-                    <Clock className="w-3 h-3 inline mr-1" />
-                    {dept.responseTime}
-                  </p>
-                </button>
-              ))}
-            </div>
-          </Card>
-
-          {/* My Tickets */}
           <Card className="p-4">
             <h3 className="font-semibold text-gray-900 mb-3">My Tickets</h3>
             <div className="space-y-2">
@@ -220,7 +170,7 @@ const Support: React.FC = () => {
                         {selectedTicketData?.subject}
                       </h3>
                       <p className="text-sm text-gray-600">
-                        {selectedDept?.name} • Ticket {selectedTicketData?.id}
+                        Ticket {selectedTicketData?.id}
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">

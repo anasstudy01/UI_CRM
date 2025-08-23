@@ -186,7 +186,7 @@ export interface Message {
   id: string;
   ticketId: string;
   userId: string;
-  departmentId: string;
+  departmentId?: string;
   sender: 'user' | 'agent';
   agentName?: string;
   message: string;
@@ -197,7 +197,7 @@ export interface Message {
 export interface ChatTicket {
   id: string;
   userId: string;
-  departmentId: string;
+  departmentId?: string;
   subject: string;
   status: 'open' | 'closed' | 'pending';
   priority: 'low' | 'medium' | 'high';
@@ -255,7 +255,7 @@ export interface Department {
 export interface Ticket {
   id: string;
   userId: string;
-  departmentId: string;
+  departmentId?: string;
   subject: string;
   status: string;
   priority: string;
@@ -268,7 +268,7 @@ export interface Message {
   id: string;
   ticketId: string;
   userId: string;
-  departmentId: string;
+  departmentId?: string;
   sender: 'user' | 'agent';
   agentName?: string;
   message: string;
