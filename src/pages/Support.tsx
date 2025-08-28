@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MessageCircle, Send, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import type {Message,ChatTicket} from '../types/index'
+import type {Message,ChatTicket} from '../types/index';
 
 
 const Support: React.FC = () => {
@@ -34,9 +34,33 @@ const Support: React.FC = () => {
 
   const fetchTickets = async () => {
     try {
-      const response = await fetch('http://localhost:3001/chatTickets?userId=1');
-      const data = await response.json();
-      setTickets(data);
+      // Mock tickets data
+      const mockTickets: ChatTicket[] = [
+        {
+          id: '1',
+          userId: '1',
+          subject: 'Account Verification Issue',
+          status: 'open',
+          priority: 'high',
+          departmentId: '1',
+          lastActivity: new Date().toISOString(),
+          assignedAgent: 'Support Agent',
+          createdAt: new Date(Date.now() - 86400000).toISOString()
+        },
+        {
+          id: '2',
+          userId: '1',
+          subject: 'Trading Platform Question',
+          status: 'pending',
+          priority: 'medium',
+          departmentId: '2',
+          lastActivity: new Date(Date.now() - 86400000).toISOString(),
+          assignedAgent: 'Technical Team',
+          createdAt: new Date(Date.now() - 172800000).toISOString()
+        }
+      ];
+      
+      setTickets(mockTickets);
     } catch (error) {
       console.error('Error fetching tickets:', error);
     }
@@ -44,9 +68,29 @@ const Support: React.FC = () => {
 
   const fetchMessages = async (ticketId: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/chatMessages?ticketId=${ticketId}`);
-      const data = await response.json();
-      setMessages(data);
+      // Mock messages data
+      const mockMessages: Message[] = [
+        {
+          id: '1',
+          ticketId: ticketId,
+          userId: '1',
+          sender: 'user',
+          message: 'I need help with account verification.',
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          status: 'sent'
+        },
+        {
+          id: '2',
+          ticketId: ticketId,
+          userId: '1',
+          sender: 'agent',
+          message: 'Hello! I\'ll be happy to help you with your account verification. Could you please provide more details?',
+          timestamp: new Date(Date.now() - 1800000).toISOString(),
+          status: 'delivered'
+        }
+      ];
+      
+      setMessages(mockMessages);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -66,24 +110,34 @@ const Support: React.FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/chatMessages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(message),
-      });
-
-      if (response.ok) {
-        setMessages([...messages, message]);
-        setNewMessage('');
-        
-        // Update ticket last activity
-        const updatedTickets = tickets.map(ticket =>
-          ticket.id === selectedTicket
-            ? { ...ticket, lastActivity: new Date().toISOString() }
-            : ticket
-        );
-        setTickets(updatedTickets);
-      }
+      // Mock sending message
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      setMessages([...messages, message]);
+      setNewMessage('');
+      
+      // Update ticket last activity
+      const updatedTickets = tickets.map(ticket =>
+        ticket.id === selectedTicket
+          ? { ...ticket, lastActivity: new Date().toISOString() }
+          : ticket
+      );
+      setTickets(updatedTickets);
+      
+      // Simulate agent response after 2 seconds
+      setTimeout(() => {
+        const agentResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          ticketId: selectedTicket,
+          userId: '1',
+          sender: 'agent',
+          message: 'Thank you for your message. Our team will review this and get back to you shortly.',
+          timestamp: new Date().toISOString(),
+          status: 'delivered',
+        };
+        setMessages(prev => [...prev, agentResponse]);
+      }, 2000);
+      
     } catch (error) {
       console.error('Error sending message:', error);
     }

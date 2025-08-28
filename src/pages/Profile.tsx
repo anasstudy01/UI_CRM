@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Camera, User,  Upload } from 'lucide-react';
+import { Camera, User, Upload } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
 import type { ProfileFormData } from '../types/index';
+
 
 // Validation schemas
 const profileValidationSchema = Yup.object({
@@ -44,28 +45,63 @@ const profileValidationSchema = Yup.object({
 const Profile: React.FC = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Initial form values
-  const initialProfileValues: ProfileFormData = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '+1234567890',
-    dateOfBirth: '1990-01-01',
-    address: '123 Main Street',
-    city: 'New York',
-    country: 'United States',
-    postalCode: '10001',
-  };
+  // Initial form values - will be updated when profile data is loaded
+  const [initialProfileValues, setInitialProfileValues] = useState<ProfileFormData>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    dateOfBirth: '',
+    address: '',
+    city: '',
+    country: '',
+    postalCode: '',
+  });
+
+  // Load profile data on component mount
+  useEffect(() => {
+    const loadProfileData = async () => {
+      setIsLoadingProfile(true);
+      try {
+        // Mock profile data loading
+        const mockProfileData: ProfileFormData = {
+          firstName: 'John',
+          lastName: 'Doe',
+          email: 'john.doe@example.com',
+          phone: '+1234567890',
+          dateOfBirth: '1990-01-15',
+          address: '123 Main St',
+          city: 'New York',
+          country: 'United States',
+          postalCode: '10001',
+        };
+        
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setInitialProfileValues(mockProfileData);
+      } catch (error) {
+        console.error('Error loading profile data:', error);
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    };
+
+    loadProfileData();
+  }, []);
 
   const handleProfileSubmit = async (values: ProfileFormData) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Mock profile update
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       console.log('Profile updated:', values);
       alert('Profile updated successfully!');
+      // Update the initial values to reflect the changes
+      setInitialProfileValues(values);
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Error updating profile. Please try again.');
@@ -108,8 +144,13 @@ const Profile: React.FC = () => {
         <p className="text-gray-600">Manage your personal information and profile picture</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Profile Picture Section */}
+      {isLoadingProfile ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+          <span className="ml-2 text-gray-600">Loading profile data...</span>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">{/* Profile Picture Section */}
         <div className="lg:col-span-1">
           <Card className="p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Profile Picture</h2>
@@ -332,7 +373,8 @@ const Profile: React.FC = () => {
             </Formik>
           </Card>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

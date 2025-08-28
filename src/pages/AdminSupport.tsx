@@ -42,21 +42,55 @@ const AdminSupport: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const [ticketsRes, departmentsRes, usersRes] = await Promise.all([
-        fetch('http://localhost:3001/chatTickets'),
-        fetch('http://localhost:3001/supportDepartments'),
-        fetch('http://localhost:3001/users')
-      ]);
+      // Mock data
+      const mockTickets: Ticket[] = [
+        {
+          id: '1',
+          userId: '1',
+          subject: 'Account Verification Issue',
+          status: 'open',
+          priority: 'high',
+          departmentId: '1',
+          assignedAgent: 'John Doe',
+          lastActivity: new Date().toISOString(),
+          createdAt: new Date(Date.now() - 86400000).toISOString()
+        }
+      ];
+      
+      const mockDepartments: Department[] = [
+        { 
+          id: '1', 
+          name: 'Technical Support',
+          description: 'Technical assistance and troubleshooting',
+          status: 'online',
+          responseTime: '< 2 hours'
+        },
+        { 
+          id: '2', 
+          name: 'Account Management',
+          description: 'Account-related inquiries',
+          status: 'online',
+          responseTime: '< 1 hour'
+        }
+      ];
+      
+      const mockUsers: User[] = [
+        { 
+          id: '1', 
+          firstName: 'Jane',
+          lastName: 'Smith',
+          email: 'jane@example.com',
+          password: '',
+          name: 'Jane Smith',
+          balance: 1000,
+          verified: true,
+          twoFactorEnabled: false
+        }
+      ];
 
-      const [ticketsData, departmentsData, usersData] = await Promise.all([
-        ticketsRes.json(),
-        departmentsRes.json(),
-        usersRes.json()
-      ]);
-
-      setTickets(ticketsData);
-      setDepartments(departmentsData);
-      setUsers(usersData);
+      setTickets(mockTickets);
+      setDepartments(mockDepartments);
+      setUsers(mockUsers);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -66,9 +100,30 @@ const AdminSupport: React.FC = () => {
 
   const fetchTicketMessages = async (ticketId: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/chatMessages?ticketId=${ticketId}`);
-      const data = await response.json();
-      setTicketMessages(data.sort((a: Message, b: Message) => 
+      // Mock messages data
+      const mockMessages: Message[] = [
+        {
+          id: '1',
+          ticketId: ticketId,
+          userId: '1',
+          sender: 'user',
+          message: 'I need help with account verification.',
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          status: 'sent'
+        },
+        {
+          id: '2',
+          ticketId: ticketId,
+          userId: '1',
+          sender: 'agent',
+          agentName: 'Support Agent',
+          message: 'Hello! I\'ll be happy to help you with your account verification.',
+          timestamp: new Date(Date.now() - 1800000).toISOString(),
+          status: 'delivered'
+        }
+      ];
+      
+      setTicketMessages(mockMessages.sort((a: Message, b: Message) => 
         new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
       ));
     } catch (error) {
@@ -92,21 +147,9 @@ const AdminSupport: React.FC = () => {
     };
 
     try {
-      await fetch('http://localhost:3001/chatMessages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(messageData)
-      });
-
-      // Update ticket's last activity
-      await fetch(`http://localhost:3001/chatTickets/${selectedTicket.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lastActivity: new Date().toISOString(),
-          assignedAgent: agentName
-        })
-      });
+      // Mock sending message - using messageData for simulation
+      console.log('Sending message:', messageData);
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       setNewMessage('');
       fetchTicketMessages(selectedTicket.id);
@@ -118,11 +161,9 @@ const AdminSupport: React.FC = () => {
 
   const updateTicketStatus = async (ticketId: string, status: string) => {
     try {
-      await fetch(`http://localhost:3001/chatTickets/${ticketId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
-      });
+      // Mock status update
+      console.log('Updating ticket status:', ticketId, status);
+      await new Promise(resolve => setTimeout(resolve, 500));
       fetchData();
     } catch (error) {
       console.error('Error updating ticket status:', error);
@@ -131,11 +172,9 @@ const AdminSupport: React.FC = () => {
 
   const assignTicket = async (ticketId: string, agent: string) => {
     try {
-      await fetch(`http://localhost:3001/chatTickets/${ticketId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ assignedAgent: agent })
-      });
+      // Mock ticket assignment
+      console.log('Assigning ticket:', ticketId, 'to', agent);
+      await new Promise(resolve => setTimeout(resolve, 500));
       fetchData();
     } catch (error) {
       console.error('Error assigning ticket:', error);

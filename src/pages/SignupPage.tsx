@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import { Eye, EyeOff, Mail, Lock, User, CheckSquare, Square } from 'lucide-react';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
-import { authAPI } from '../services/api';
 import laptop from '../assets/lapi.png';
 import logo from '../assets/company-logo 1.png';
 import type { SignupFormData } from '../types';
@@ -12,17 +11,15 @@ import { useNavigate } from 'react-router-dom';
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { IoMdTime } from "react-icons/io";
 
-
 interface SignupPageProps {
-  onSignup: (token: string) => void;
-  onSwitchToLogin: () => void;
+  onSwitchToLogin?: () => void;
 }
 
 /**
- * Signup page component following the same design as Login page
- * Handles user registration with form validation using Formik
+ * Signup page component - Pure UI version without API calls
+ * Handles user registration with mock validation
  */
-const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onSwitchToLogin }) => {
+const SignupPage: React.FC<SignupPageProps> = ({ onSwitchToLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,16 +62,18 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onSwitchToLogin }) =>
     onSubmit: async (values) => {
       setIsLoading(true);
       try {
-        await authAPI.signup({
-          name: values.name,
-          email: values.email,
-          password: values.password,
-        });
+        // Mock signup process
+        await new Promise(resolve => setTimeout(resolve, 1500));
         
-        // Simulate token generation for demo
-        const token = 'demo-token-' + Date.now();
-        onSignup(token);
-        navigate('/dashboard');
+        // Mock successful signup
+        localStorage.setItem('mockUser', JSON.stringify({ 
+          email: values.email, 
+          name: values.name 
+        }));
+        
+        console.log('Account created successfully:', values);
+        alert('Account created successfully! You can now login.');
+        navigate('/login');
      
       } catch (error) {
         console.error('Signup failed:', error);
@@ -242,7 +241,12 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onSwitchToLogin }) =>
                 Already have an account?{' '}
                 <button
                   type="button"
-                  onClick={onSwitchToLogin}
+                  onClick={() => {
+                    if (onSwitchToLogin) {
+                      onSwitchToLogin();
+                    }
+                    navigate('/login');
+                  }}
                   className="font-medium text-green-600 hover:text-green-500 underline"
                 >
                   Sign In

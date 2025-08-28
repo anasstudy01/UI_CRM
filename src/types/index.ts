@@ -312,3 +312,51 @@ export interface ProfileFormData {
 export interface ProfilePictureData {
   profilePicture: File | null;
 }
+
+// API Response types
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
+export interface ProfileUpdateResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  address: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  updatedAt: string;
+}
+
+export interface PasswordUpdateResponse {
+  success: boolean;
+  message: string;
+}
+
+// Dashboard types
+export interface DashboardData {
+  totalBalance: number;
+  totalProfit: number;
+  totalTrades: number;
+  activeAccounts: number;
+  monthlyGrowth: number;
+  recentTransactions: Transaction[];
+  tradingPositions: Position[];
+}
+
+// User types for login response
+export interface UserProfile {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  verified: boolean;
+  twoFactorEnabled: boolean;
+}

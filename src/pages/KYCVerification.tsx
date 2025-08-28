@@ -5,7 +5,6 @@ import { Upload, FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { kycAPI } from '../services/api';
 import type { KYCDocument, KYCFormData } from '../types';
 
 /**
@@ -28,8 +27,29 @@ const KYCVerification: React.FC = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const data = await kycAPI.getDocuments();
-        setDocuments(data);
+        // Mock KYC documents
+        const mockDocuments: KYCDocument[] = [
+          {
+            id: '1',
+            userId: '1',
+            documentType: 'passport',
+            documentNumber: 'P123456789',
+            expiryDate: '2030-12-31',
+            uploadDate: new Date(Date.now() - 86400000).toISOString(),
+            status: 'approved'
+          },
+          {
+            id: '2',
+            userId: '1',
+            documentType: 'proof_of_address',
+            documentNumber: 'POA123',
+            expiryDate: '2025-06-30',
+            uploadDate: new Date(Date.now() - 172800000).toISOString(),
+            status: 'pending'
+          }
+        ];
+        
+        setDocuments(mockDocuments);
       } catch (error) {
         console.error('Failed to fetch documents:', error);
       }
@@ -61,16 +81,22 @@ const KYCVerification: React.FC = () => {
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        await kycAPI.uploadDocument({
+        // Mock document upload
+        const newDocument = {
+          id: Date.now().toString(),
           userId: 1,
           documentType: values.documentType,
           documentNumber: values.documentNumber,
           expiryDate: values.expiryDate,
-        });
+          uploadDate: new Date().toISOString(),
+          status: 'pending'
+        };
         
-        // Refresh documents list
-        const updatedDocuments = await kycAPI.getDocuments();
-        setDocuments(updatedDocuments);
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Add new document to the list
+        setDocuments(prev => [...prev, newDocument]);
         
         formik.resetForm();
         if (activeStep < steps.length - 1) {

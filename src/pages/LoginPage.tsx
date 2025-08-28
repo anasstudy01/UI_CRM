@@ -5,8 +5,6 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import Input from '../components/ui/Input';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
-import { authAPI } from '../services/api';
-
 import type { LoginFormData } from '../types';
 import { IoMdTime } from 'react-icons/io';
 import { RiSecurePaymentLine } from 'react-icons/ri';
@@ -14,15 +12,14 @@ import laptop from '../assets/lapi.png';
 import logo from '../assets/company-logo 1.png';
 
 interface LoginPageProps {
-  onLogin: (token: string) => void;
   onSwitchToSignup?: () => void;
 }
 
 /**
- * Login page component based on the Billion InfoTech Design
- * Handles user authentication with email and password
+ * Login page component - Pure UI version without API calls
+ * Handles user authentication with mock validation
  */
-const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToSignup }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToSignup }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -47,11 +44,26 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToSignup }) => {
     onSubmit: async (values) => {
       setIsLoading(true);
       try {
-        const response = await authAPI.login(values.email, values.password);
-        onLogin(response.token);
+        // Mock authentication - just check for demo credentials
+        if (values.email === 'admin@demo.com' && values.password === 'demo123') {
+          // Simulate API delay
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          // Mock successful login
+          localStorage.setItem('mockUser', JSON.stringify({ 
+            email: values.email, 
+            name: 'Demo User' 
+          }));
+          
+          // Navigate to dashboard
+          navigate('/dashboard');
+        } else {
+          throw new Error('Invalid credentials. Try admin@demo.com / demo123');
+        }
       } catch (error) {
         console.error('Login failed:', error);
-        formik.setFieldError('password', 'Invalid email or password');
+        const errorMessage = error instanceof Error ? error.message : 'Invalid email or password';
+        formik.setFieldError('password', errorMessage);
       } finally {
         setIsLoading(false);
       }
@@ -92,11 +104,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToSignup }) => {
 
           <form onSubmit={formik.handleSubmit} className="space-y-6">
             <Input
-            
               label="Email"
               type="email"
               name="email"
               placeholder="Email"
+              autoComplete="current-email"
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -111,6 +123,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToSignup }) => {
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 placeholder="Password"
+                autoComplete="current-password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -160,11 +173,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onSwitchToSignup }) => {
             </div>
           </form>
 
-          {/* Demo credentials info */}
+          {/* Demo Login Info */}
           <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-800 font-medium mb-2">Demo Credentials:</p>
-            <p className="text-sm text-blue-700">Email: demo@ambitious.com</p>
-            <p className="text-sm text-blue-700">Password: password123</p>
+            <p className="text-sm text-blue-800 font-medium mb-2">Demo Login:</p>
+            <p className="text-sm text-blue-700">This is a UI-only demo version</p>
+            <p className="text-sm text-blue-700">Use: admin@demo.com / demo123</p>
           </div>
         </div>
       </div>

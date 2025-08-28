@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Edit, Trash2, Eye, Settings, TrendingUp } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { accountsAPI } from '../services/api';
+
 import type { Account } from '../types';
 
 /**

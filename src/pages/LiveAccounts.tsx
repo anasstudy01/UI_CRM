@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Eye, Settings } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { accountsAPI } from '../services/api';
 import type { Account } from '../types';
 import { Link } from 'react-router-dom';
 
@@ -18,8 +17,33 @@ const LiveAccounts: React.FC = () => {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const data = await accountsAPI.getAccounts();
-        setAccounts(data);
+        // Mock accounts data
+        const mockAccounts: Account[] = [
+          {
+            id: '1',
+            userId: '1',
+            accountNumber: 'AMB12345678',
+            accountType: 'Standard',
+            balance: 5000,
+            currency: 'USD',
+            leverage: '1:100',
+            status: 'Active'
+          },
+          {
+            id: '2',
+            userId: '1',
+            accountNumber: 'AMB87654321',
+            accountType: 'Premium',
+            balance: 15000,
+            currency: 'EUR',
+            leverage: '1:200',
+            status: 'Active'
+          }
+        ];
+        
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setAccounts(mockAccounts);
       } catch (error) {
         console.error('Failed to fetch accounts:', error);
       } finally {
